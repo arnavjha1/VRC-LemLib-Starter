@@ -12,7 +12,7 @@ pros::MotorGroup rightMotors({ 6,-9, 7}, pros::MotorGearset::blue); // right mot
 pros::Motor armMotor(8, pros::MotorGearset::green);   // random port + cartridge
 pros::Motor clawMotor(1, pros::MotorGearset::green);  // random port + cartridge
 
-bool clawOpen = false;
+bool clawIsOpen = false;
 bool xPressedLast = false;
 
 // Inertial Sensor on port 10
@@ -85,6 +85,23 @@ lemlib::ExpoDriveCurve steerCurve(3, // joystick deadband out of 127
 
 // create the chassis
 lemlib::Chassis chassis(drivetrain, linearController, angularController, sensors, &throttleCurve, &steerCurve);
+
+// move arm to a target position (degrees)
+void armToPos(double position, int velocity = 100) {
+    armMotor.move_absolute(position, velocity);
+}
+
+// open claw
+void clawOpen() {
+    clawMotor.move_absolute(90, 100); // adjust 90 later
+    clawIsOpen = true;
+}
+
+// close claw
+void clawClose() {
+    clawMotor.move_absolute(0, 100); // adjust 0 later
+    clawIsOpen = false;
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -200,12 +217,10 @@ void opcontrol() {
         bool xPressed = controller.get_digital(pros::E_CONTROLLER_DIGITAL_X);
 
         if (xPressed && !xPressedLast) {
-            clawOpen = !clawOpen;
-
-            if (clawOpen) {
-                clawMotor.move_relative(90, 100);   // open claw
+            if (clawIsOpen) {
+                clawClose();
             } else {
-                clawMotor.move_relative(-90, 100);  // close claw
+                clawOpen();
             }
         }
 
