@@ -164,7 +164,6 @@ void example_autonomous() {
  */
 void autonomous() {
     //Start your auto here! You can use the example autonomous routine, or write your own
-	
 
 }
 

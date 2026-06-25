@@ -189,6 +189,13 @@ void example_autonomous() {
  * This is the function that actually runs during the autonomous period:
  */
 void autonomous() {
+    // set position to x:0, y:0, heading:0
+	chassis.setPose(0, 0, 0);
+    chassis.setMaxSpeed(127); // set max speed to 127 (default is 127)
+    chassis.setMaxAcceleration(20); // set max acceleration to 20 (default is 20)
+    chassis.setMaxAngularSpeed(127); // set max angular speed to 127 (default is 127)
+    chassis.setMaxAngularAcceleration(20); // set max angular acceleration to 20 (default is 20)
+    
     //Start your auto here! You can use the example autonomous routine, or write your own
 	
 
